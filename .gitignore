@@ -1,0 +1,8 @@
+*.class
+*.jar
+*.out
+*.swp
+SrcDestTxs*
+Test.java
+TxOutputs*
+test.py
