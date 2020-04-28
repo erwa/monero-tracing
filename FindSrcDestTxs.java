@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 // time java -cp *:. FindSrcDestTxs 2037553 2037653 TxOutputsRingCTAll
+// Outputs on each line: src dst TXOs
 public class FindSrcDestTxs {
   private static final Map<String, String> keyTxMap = new HashMap<>();
 
@@ -133,6 +134,7 @@ public class FindSrcDestTxs {
     for (Map.Entry<String, KeyIdxs> entry : txToKeyIdxsMap.entrySet()) {
         KeyIdxs ki = entry.getValue();
         if (ki.valid && ki.keys.size() > 1) {
+            // src dst TXOs
             System.out.println(entry.getKey() + " " + hash + " " + String.join(",", ki.keys));
         }
     }

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
+// java TraceTxs TxInputsAll
 public class TraceTxs {
   private static class Pair {
     int tx;
@@ -80,7 +81,13 @@ public class TraceTxs {
     printTraced();
   }
 
-  private static Set<Pair> tracedInputs = new HashSet<>();
+  private static Map<Pair,Integer> tracedInputs = new TreeMap<>(
+    (Pair p1, Pair p2) -> {
+      if (p1.tx != p2.tx) {
+        return p1.tx - p2.tx;
+      }
+      return p1.idx - p2.idx;
+    });
 
   private static void trace(int iterCount) {
     // alg: get all inputs with 1 key
@@ -100,7 +107,7 @@ public class TraceTxs {
         tracedKeys.addAll(entry.getValue());
 
         // add to traced inputs
-        tracedInputs.add(entry.getKey());
+        tracedInputs.put(entry.getKey(), entry.getValue().iterator().next());
 
         // remove from inputs
         iter.remove();
@@ -126,8 +133,9 @@ public class TraceTxs {
   }
 
   private static void printTraced() {
-    for (Pair input : tracedInputs) {
-      System.out.println(input.tx + " " + input.idx);
+    for (Map.Entry<Pair,Integer> traced : tracedInputs.entrySet()) {
+      System.out.println(traced.getKey().tx + " "
+        + traced.getKey().idx + " " + traced.getValue());
     }
   }
 }

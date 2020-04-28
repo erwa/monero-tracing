@@ -7,12 +7,17 @@
 *.zip
 CountTxsNonRingCT
 CountTxsRingCTAll
+DestKeysRingCT
 FullyTracedTxs
 InputKeysAll
+NewestBefore*
+NewestGrouped*
+NewestPost*
 PartiallyTracedTxs
 SrcDestTxs*
 Test.java
 TracedInputs*
+TracedNewestHeuristic
 TxDates*
 TxHashes*
 TxInputs*
