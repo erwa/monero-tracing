@@ -5,11 +5,13 @@
 *.swp
 *.tsv
 *.zip
+AnonSetSizes*
 CountTxsNonRingCT
 CountTxsRingCTAll
 DestKeysRingCT
 FullyTracedTxs
 InputKeysAll
+InputsReduced*
 NewestBefore*
 NewestGrouped*
 NewestPost*
