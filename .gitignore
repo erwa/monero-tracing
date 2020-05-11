@@ -20,11 +20,6 @@ SrcDestTxs*
 Test.java
 TracedInputs*
 TracedNewestHeuristic
-TxDates*
-TxHashes*
-TxOutputs*
-TxTs*
-ZeroMixinTxns
 h2/
 temp
 test

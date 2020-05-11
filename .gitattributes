@@ -1,1 +1,10 @@
 TxInputsAll filter=lfs diff=lfs merge=lfs -text
+TxDatesAll filter=lfs diff=lfs merge=lfs -text
+TxHashes1000 filter=lfs diff=lfs merge=lfs -text
+TxHashes100000 filter=lfs diff=lfs merge=lfs -text
+TxHashesAll filter=lfs diff=lfs merge=lfs -text
+TxOutputs100 filter=lfs diff=lfs merge=lfs -text
+TxOutputs1000 filter=lfs diff=lfs merge=lfs -text
+TxOutputsRingCTAll filter=lfs diff=lfs merge=lfs -text
+TxTsAll filter=lfs diff=lfs merge=lfs -text
+ZeroMixinTxns filter=lfs diff=lfs merge=lfs -text
