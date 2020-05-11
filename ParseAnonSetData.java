@@ -112,19 +112,9 @@ public class ParseAnonSetData {
     for (Map.Entry<Integer,Map<Integer,Integer>> entry : anonSzMap.entrySet()) {
       System.out.print(entry.getKey());
 
-      // first sum values
-      int sum = 0;
-      for (int szCount : entry.getValue().values()) {
-        sum += szCount;
-      }
-
       // now print out percentages
-      for (int i = 1; i <= 11; i++) {
-        if (entry.getValue().containsKey(i)) {
-          System.out.print("," + (entry.getValue().get(i) * 1.0 / sum));
-        } else {
-          System.out.print("," + 0.0);
-        }
+      for (int count : entry.getValue().values()) {
+        System.out.print("," + count);
       }
 
       System.out.println();
