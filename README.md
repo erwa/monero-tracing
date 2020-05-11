@@ -29,7 +29,7 @@ The generated data looks at blocks 0 through 2077094.
 
 A brief description of the main data files and how they were generated is given below:
 
-* TxHashesAll - a list of all the transaction hashes for the blocks analyzed. Generated using [](GetAllTxs.java). In the following descriptions, `txId` is an index that maps to line number (txId - 1) of this file.
+* TxHashesAll - a list of all the transaction hashes for the blocks analyzed. Generated using [GetAllTxs.java](GetAllTxs.java). In the following descriptions, `txId` is an index that maps to line number (txId - 1) of this file.
 * InputKeysAll - a list of all the transaction output (TXO) public keys used as inputs in the above transactions
 * TxInputsAll - each line is "txId inputIdx keyId1 keyId2 ...", where `txId` maps to line number (txId - 1) of TxHashesAll, `inputIdx` is the `inputIdx`th input (0-indexed) of the transaction, and each `keyId` maps to line number (keyId - 1) of InputKeysAll.
 * InputsReduced - same format as TxInputsAll, after running zero-mixin chain analysis and removing spent outputs
