@@ -27,9 +27,9 @@ java GetAllInputKeys TxHashesAll > InputKeysAll
 
 The generated data looks at blocks 0 through 2077094.
 
-A brief description of the main data files follows:
+A brief description of the main data files and how they were generated is given below:
 
-* TxHashesAll - a list of all the transaction hashes for the blocks analyzed
+* TxHashesAll - a list of all the transaction hashes for the blocks analyzed. Generated using [GetAllTxs.java](). In the following descriptions, `txId` is an index that maps to line number (txId - 1) of this file.
 * InputKeysAll - a list of all the transaction output (TXO) public keys used as inputs in the above transactions
 * TxInputsAll - each line is "txId inputIdx keyId1 keyId2 ...", where `txId` maps to line number (txId - 1) of TxHashesAll, `inputIdx` is the `inputIdx`th input (0-indexed) of the transaction, and each `keyId` maps to line number (keyId - 1) of InputKeysAll.
 * InputsReduced - same format as TxInputsAll, after running zero-mixin chain analysis and removing spent outputs
@@ -38,3 +38,5 @@ A brief description of the main data files follows:
 * NewestGroupedAfter201701 - same as NewestGroupedBefore201701, except for inputs from 201701 or later
 * AnonSetSizes - for inputs with 0 to 10 mixins, the number of such inputs with anonymity set sizes of 1 through (numMixins + 1)
 * AnonSetSizesX - same as AnonSetSizes, except after simulating a breach of a fraction X of non-fully-deduced inputs
+* DestKeysRingCT - each line has the format `txId inputIdx keyId` where txId maps to line (txId - 1) of TxHashesAll, `inputIdx` is the `inputIdx`th input (0-indexed) of the transaction, and `keyId` maps to line number (keyId - 1) of InputKeysAll.
+* TracedInputsAllWithKeys - each line has the format `txId inputIdx keyId`
