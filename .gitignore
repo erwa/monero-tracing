@@ -22,7 +22,6 @@ TracedInputs*
 TracedNewestHeuristic
 TxDates*
 TxHashes*
-TxInputs*
 TxOutputs*
 TxTs*
 ZeroMixinTxns
