@@ -1,15 +1,22 @@
+#!/usr/bin/env python3
+
 import requests 
 import json
 import csv
+import sys
 import matplotlib.pyplot as plt
 from config import viewkey_in, viewkey_out, address_in, address_out
 
-url = 'http://jeju.andrew.cmu.edu:8081/api/'
+try:
+    url, wallet = sys.argv[0], sys.argv[1]
+except:
+    print("Usage: python get_transaction_distribution.py <url> <wallet csv>")
+
 mixins = dict()
 mixin_blocks = dict()
 tx_outputs = []
 
-with open('RHWallet.csv', newline='') as csvfile:
+with open(wallet, newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         res = requests.get(url = url + 'transaction/' + row['tx_id'])
