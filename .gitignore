@@ -3,7 +3,6 @@
 *.log
 *.out
 *.swp
-*.tsv
 *.zip
 InputKeysAll
 Test.java
