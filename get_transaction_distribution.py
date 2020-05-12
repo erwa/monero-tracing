@@ -43,11 +43,14 @@ with open(wallet, newline='') as csvfile:
 tx_output_rank = dict()
 for out in tx_outputs:
     if out in mixins:
-        print(mixins[out])
         tx_output_rank[mixins[out]] = tx_output_rank.get(mixins[out], 0) + 1
 
+# Also add ranks if its frequency is 0;
+for i in range(10):
+    if i not in tx_output_rank.keys():
+        tx_output_rank[i] = 0
+
 ranks = list(tx_output_rank.keys())
-print(sum(tx_output_rank))
 tx_output_freq = {k: v / total for total in (sum(tx_output_rank.values()),) for k, v in tx_output_rank.items()}
 freqs = list(tx_output_freq.values())
 
