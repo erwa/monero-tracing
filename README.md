@@ -11,6 +11,17 @@ For CMU 17703 Cryptocurrencies, Blockchains, and Applications final project on a
 * [Monero Blockchain Explorer](https://github.com/moneroexamples/onion-monero-blockchain-explorer) running locally at http://127.0.0.1:8081 pointing to locally synced Monero blockchain
 
 
+### Setting up Monero Blockchain Explorer
+
+Use the Monero client to sync the Monero blockchain on your machine. Then follow the instructions at [onion-monero-blockchain-explorer](https://github.com/moneroexamples/onion-monero-blockchain-explorer) to build and run it.
+
+When starting the blockchain explorer, make sure to enable the JSON API and mixin details:
+
+```
+./xmrblocks --enable-json-api --enable-mixin-details=1 -b /path/to/monero/blockchain/data/lmdb/
+```
+
+
 ### Data and scripts overview
 
 All the generated data files (except InputKeysAll, which exceeds GitHub's 2 GB Git LFS file size limit) are checked in to this repo using Git LFS. To skip downloading the data files when cloning the repo, use

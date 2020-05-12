@@ -2,6 +2,7 @@
 *.jar
 *.log
 *.out
+*.sublime-*
 *.swp
 *.zip
 InputKeysAll
