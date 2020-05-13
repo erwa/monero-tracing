@@ -60,7 +60,7 @@ A brief description of the main data files and how they were generated is given 
 
 * TxOutputsRingCTAll - each line is `txHash txo1,txo2,...` where `txHash` is the transaction hash and each `txo` is a transaction output public key hash. This file only includes transactions after the start of RingCT (from 201701 onward). Generated using [GetTxOutputs.java](GetTxOutputs.java).
 
-* SrcDestTxsRingCTAll - each line is `srcTxHash dstTxHash txo1,txo2,...` where `srcTxHash` is the source transaction hash, `dstTxHash` is the destination transaction hash, and each `txo` is a transaction output public key hash. Generated using `FindSrcDestTxs.java`. This is the output of running the "Output Merging" heuristic from the paper "A Traceability Analysis of Monero's Blockchain" by Kumar et al.
+* SrcDestTxsRingCTAll - each line is `srcTxHash dstTxHash txo1,txo2,...` where `srcTxHash` is the source transaction hash, `dstTxHash` is the destination transaction hash, and each `txo` is a transaction output public key hash. Generated using [FindSrcDestTxs.java](FindSrcDestTxs.java). This is the output of running the "Output Merging" heuristic from the paper "A Traceability Analysis of Monero's Blockchain" by Kumar et al.
 
 * DestKeysRingCT - each line has the format `txId inputIdx keyId`, where `inputIdx` is the `inputIdx`th input (0-indexed) of the transaction and `keyId` is the guessed real input key. Generated using [ParseDestIdxKey.java](ParseDestIdxKey.java).
 
