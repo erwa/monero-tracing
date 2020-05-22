@@ -1,6 +1,6 @@
 # monero-tracing
 
-For CMU 17703 Cryptocurrencies, Blockchains, and Applications final project on alt coin traceability.
+Please see our write-up, [Alt-Coin Traceability](https://eprint.iacr.org/2020/593) for more details. This project was done as part of the final project for CMU's 17703/19733 Cryptocurrencies, Blockchains, and Applications class.
 
 
 ### Prerequisites for running code in this repo
