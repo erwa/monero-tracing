@@ -24,7 +24,7 @@ When starting the blockchain explorer, make sure to enable the JSON API and mixi
 
 ### Data and scripts overview
 
-All the generated data files (except InputKeysAll, which exceeds GitHub's 2 GB Git LFS file size limit) are checked in to this repo using Git LFS. To skip downloading the data files when cloning the repo, use
+Most of the large generated data files (except InputKeysAll, which exceeds GitHub's 2 GB Git LFS file size limit) are checked in to this repo using Git LFS. To skip downloading the data files when cloning the repo, use
 
 ```
 GIT_LFS_SKIP_SMUDGE=1 git clone git@github.com:erwa/monero-tracing.git
