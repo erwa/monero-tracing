@@ -5,7 +5,9 @@
 *.sublime-*
 *.swp
 *.zip
+AnonSetSizes*
 InputKeysAll
+InputsReduced*
 Test.java
 h2/
 temp

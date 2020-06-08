@@ -1,14 +1,7 @@
-AnonSetSizes0.15 filter=lfs diff=lfs merge=lfs -text
-AnonSetSizes0.3 filter=lfs diff=lfs merge=lfs -text
-AnonSetSizes0.6 filter=lfs diff=lfs merge=lfs -text
-AnonSetSizes filter=lfs diff=lfs merge=lfs -text
 CountTxsNonRingCT filter=lfs diff=lfs merge=lfs -text
 CountTxsRingCTAll filter=lfs diff=lfs merge=lfs -text
 DestKeysRingCT filter=lfs diff=lfs merge=lfs -text
 FullyTracedTxs filter=lfs diff=lfs merge=lfs -text
-InputsReduced0.15 filter=lfs diff=lfs merge=lfs -text
-InputsReduced0.3 filter=lfs diff=lfs merge=lfs -text
-InputsReduced0.6 filter=lfs diff=lfs merge=lfs -text
 NewestBefore201701 filter=lfs diff=lfs merge=lfs -text
 NewestGroupedAfter201701 filter=lfs diff=lfs merge=lfs -text
 NewestGroupedBefore201701 filter=lfs diff=lfs merge=lfs -text
