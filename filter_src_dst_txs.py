@@ -5,7 +5,7 @@ from collections import OrderedDict
 import pprint
 import sys
 
-# python3 src_dest_counts_filtered.py SrcDestTxsRingCTAll
+# ./filter_src_dst_txs.py SrcDestTxsRingCTAll
 def main():
     file = sys.argv[1]
 
@@ -35,9 +35,10 @@ def main():
                 entry['used_keys'].add(key)
 
     dests = set()
-    # remove dests that use multi_used keys
+    # remove dests that use multi_used keys (S2)
     for src in list(src_dest_map.keys()):
         entry = src_dest_map[src]
+        # also removes 'multi_used_keys' from the dict
         multi_used_keys = entry.pop('multi_used_keys')
         del entry['used_keys']
         for dst in list(entry.keys()):
@@ -67,19 +68,11 @@ def main():
     sys.stderr.write('Num unique dests: ' + str(len(dests)) + '\n')
     sys.stderr.write('Num unique txs (src or dest): ' + str(len(all_txs)) + '\n')
 
-    src_dest_counts = {}
     for src, dests in src_dest_map.items():
-        num_dests = len(dests)
-        if num_dests not in src_dest_counts:
-            src_dest_counts[num_dests] = 0
-        src_dest_counts[num_dests] += 1
-
-    # print('Source destination counts:')
-    # pp = pprint.PrettyPrinter(indent=2)
-    # pp.pprint(src_dest_counts)
-    sys.stderr.write('Writing out src dest counts\n')
-    for num in sorted(src_dest_counts):
-        print(str(num) + '\t' + str(src_dest_counts[num]))
+        for dest, keys in dests.items():
+            sys.stdout.write(src + ' ' + dest + ' ')
+            sys.stdout.write(','.join(keys))
+            sys.stdout.write('\n')
 
 
 if __name__ == '__main__':

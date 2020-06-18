@@ -16,8 +16,8 @@ import java.util.TreeMap;
 // before some txn.
 
 // <end> is txn id
-// java CalculateNewestSuccessByNumMixinsBefore TxInputsAll TracedNewestHeuristic <end>
-public class CalculateNewestSuccessByNumMixinsBefore {
+// java CalculateNewestSuccessByNumMixinsBeforeTxType TxInputsAll TracedTxTypeMap TracedNewestHeuristic <end>
+public class CalculateNewestSuccessByNumMixinsBeforeTxType {
 
   private static class Pair {
     int tx;
@@ -68,24 +68,48 @@ public class CalculateNewestSuccessByNumMixinsBefore {
     System.err.println("Loaded " + count + " input keys from file " + file);
   }
 
+  private static Map<Integer, Integer> txTypeMap = new HashMap<>();
+
+  private static void loadTracedTxTypeMap(String file) throws Exception {
+    System.err.println("loading tx type map from " + file);
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      for (String txInput; (txInput = br.readLine()) != null; ) {
+        String[] parts = txInput.split(" ");
+        txTypeMap.put(Integer.parseInt(parts[0]),
+          Integer.parseInt(parts[1]));
+      }
+    }
+    System.err.println("done loading tx type map from " + file);
+  }
+
   public static void main(String[] args) throws Exception {
     String txInputs = args[0];
-    String tracedNewest = args[1];
-    int end = Integer.parseInt(args[2]);
+    String tracedTxTypeMapFile = args[1];
+    String tracedNewest = args[2];
+    int end = Integer.parseInt(args[3]);
 
     loadTxInputs(txInputs);
+    loadTracedTxTypeMap(tracedTxTypeMapFile);
     process(tracedNewest, end);
   }
 
   private static Map<Integer, Integer> mixinCount = new TreeMap<>();
-  private static Map<Integer, Integer> mixinSuccess = new TreeMap<>();
 
+  // type 1 txns (fully clear)
+  private static Map<Integer, Integer> mixinSuccess1 = new TreeMap<>();
+  // type 2 txns (clear -> hidden)
+  private static Map<Integer, Integer> mixinSuccess2 = new TreeMap<>();
+  // type 3 txns (fully hidden)
+  private static Map<Integer, Integer> mixinSuccess3 = new TreeMap<>();
+
+  // read traced newest file (which records correct/incorrect)
   private static void process(String tracedNewest, int end) throws Exception {
     System.err.println("Reading inputs from " + tracedNewest);
 
     int count = 0;
     try (BufferedReader br = new BufferedReader(new FileReader(tracedNewest))) {
       for (String line; (line = br.readLine()) != null; ) {
+        // each line is "txId idx correct/incorrect"
         String[] parts = line.split(" ");
         int tx = Integer.parseInt(parts[0]);
         int idx = Integer.parseInt(parts[1]);
@@ -95,16 +119,29 @@ public class CalculateNewestSuccessByNumMixinsBefore {
           Pair inp = new Pair(tx, idx);
           int mixins = inputMixins.get(inp);
 
+          if (mixins > 10) {
+            mixins = 10;
+          }
+
           if (!mixinCount.containsKey(mixins)) {
             mixinCount.put(mixins, 0);
           }
           mixinCount.put(mixins, mixinCount.get(mixins) + 1);
 
           if (isNewestSuccessful) {
-            if (!mixinSuccess.containsKey(mixins)) {
-              mixinSuccess.put(mixins, 0);
+            int type = txTypeMap.get(tx);
+            Map<Integer,Integer> mixinSuccessMap;
+            switch (type) {
+              case 1: mixinSuccessMap = mixinSuccess1; break;
+              case 2: mixinSuccessMap = mixinSuccess2; break;
+              case 3: mixinSuccessMap = mixinSuccess3; break;
+              default:
+                throw new RuntimeException();
             }
-            mixinSuccess.put(mixins, mixinSuccess.get(mixins) + 1);
+            if (!mixinSuccessMap.containsKey(mixins)) {
+              mixinSuccessMap.put(mixins, 0);
+            }
+            mixinSuccessMap.put(mixins, mixinSuccessMap.get(mixins) + 1);
           }
 
         }
@@ -118,13 +155,23 @@ public class CalculateNewestSuccessByNumMixinsBefore {
 
     System.err.println("Total number of traced inputs before tx "
       + end + ": " + count);
-    for (Map.Entry<Integer,Integer> entry : mixinSuccess.entrySet()) {
+
+    // now print per-mixin stats
+    for (Map.Entry<Integer,Integer> entry : mixinCount.entrySet()) {
       int mixins = entry.getKey();
-      int total = mixinCount.get(mixins);
-      int correct = entry.getValue();
-      System.out.print(mixins + " mixins: "
-        + total + " traced, " + correct + " newest correct (");
-      System.out.println((correct * 1.0) / total + ")");
+      int total = entry.getValue();
+
+      int correct1 = mixinSuccess1.containsKey(mixins) ? mixinSuccess1.get(mixins) : 0;
+      int correct2 = mixinSuccess2.containsKey(mixins) ? mixinSuccess2.get(mixins) : 0;
+      int correct3 = mixinSuccess3.containsKey(mixins) ? mixinSuccess3.get(mixins) : 0;
+
+      // mixins, total traced, correct1, correct2, correct3
+      if (mixins == 10) {
+        System.out.print("10+");
+      } else {
+        System.out.print(mixins);
+      }
+      System.out.println("," + total + "," + correct1 + "," + correct2 + "," + correct3);
     }
   }
 }

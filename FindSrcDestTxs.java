@@ -5,6 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-// time java -cp *:. FindSrcDestTxs 2037553 2037653 TxOutputsRingCTAll
+// javac -cp *:. FindSrcDestTxs.java
+// start block / end block
+// time java -cp *:. FindSrcDestTxs 1220517 2077095 TxOutputsRingCTAll
+// TxOutputsRingCTAll has lines like
+//   txHash txo1,txo2,...
 // Outputs on each line: src dst TXOs
 public class FindSrcDestTxs {
   private static final Map<String, String> keyTxMap = new HashMap<>();
@@ -92,6 +97,7 @@ public class FindSrcDestTxs {
     public boolean valid = true;
   }
 
+  // hash is candidate dst txn
   private static void parseTx(String hash) throws Exception {
     HttpRequest request = HttpRequest.newBuilder()
             .GET()
@@ -104,6 +110,7 @@ public class FindSrcDestTxs {
     int inputEnd = data.indexOf("}]}]", inputStart);
     JSONArray inputs = JSON.parseArray(data.substring(inputStart + 8, inputEnd + 4));
 
+    // TODO: check for case where key idxs for different txs overlap
     Map<String, KeyIdxs> txToKeyIdxsMap = new HashMap<>();
     int idx = 0;
     for (Object input : inputs) {
@@ -118,11 +125,11 @@ public class FindSrcDestTxs {
                     txToKeyIdxsMap.put(tx, new KeyIdxs());
                 }
                 KeyIdxs ki = txToKeyIdxsMap.get(tx);
-                if (ki.keys.contains(pubKey)) { // same key ref'd multiple times in inputs
+                if (ki.keys.contains(pubKey)) { // same key ref'd multiple times in inputs (S3)
                     ki.valid = false;
                 }
                 ki.keys.add(pubKey);
-                if (ki.idxs.contains(idx)) { // same txn ref'd multiple times in one input
+                if (ki.idxs.contains(idx)) { // same txn ref'd multiple times in one input (S4)
                     ki.valid = false;
                 }
                 ki.idxs.add(idx);
@@ -131,12 +138,32 @@ public class FindSrcDestTxs {
         idx++;
     }
 
+    txToKeyIdxsMap.entrySet().removeIf(entry -> !entry.getValue().valid || entry.getValue().keys.size() < 2);    
+
+    // TODO: double check logic
+    // remove txs whose idxs overlap with other txs
+    Set<String> overlapTxs = new HashSet<>();
     for (Map.Entry<String, KeyIdxs> entry : txToKeyIdxsMap.entrySet()) {
-        KeyIdxs ki = entry.getValue();
-        if (ki.valid && ki.keys.size() > 1) {
-            // src dst TXOs
-            System.out.println(entry.getKey() + " " + hash + " " + String.join(",", ki.keys));
+        String tx = entry.getKey();
+        Set<Integer> idxs = entry.getValue().idxs;
+        for (Map.Entry<String, KeyIdxs> entry2 : txToKeyIdxsMap.entrySet()) {
+            if (tx.equals(entry2.getKey())) {
+                continue;
+            }
+            if (!Collections.disjoint(idxs, entry2.getValue().keys)) {
+                overlapTxs.add(tx);
+                overlapTxs.add(entry2.getKey());
+            }
         }
+    }
+    overlapTxs.forEach(tx -> txToKeyIdxsMap.remove(tx));
+
+    // print src dest for any remaining
+    for (Map.Entry<String, KeyIdxs> entry : txToKeyIdxsMap.entrySet()) {
+        String srcTx = entry.getKey();
+        KeyIdxs ki = entry.getValue();
+        // src dst TXOs
+        System.out.println(srcTx + " " + hash + " " + String.join(",", ki.keys));
     }
   }
 }

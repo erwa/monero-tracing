@@ -17,8 +17,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 // time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAll
+// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAllFiltered
 // Outputs on each line: dst idx key (all using integers)
-// 1 hr 5 min
+// This is needed so we can check whether merging output heuristic is correct.
+// 1 hr 5 min (for SrcDestTxsRingCTAll (non-filtered))
 public class ParseDestIdxKey {
   private static final Map<String, Integer> keyMap = new HashMap<>();
   private static final Map<String, Integer> txMap = new HashMap<>();
@@ -82,6 +84,7 @@ public class ParseDestIdxKey {
       for (String line; (line = br.readLine()) != null; ) {
         String[] parts = line.split(" ");
         String dst = parts[1];
+        // keys must be comma-separated!
         Set<String> keys = new HashSet<>(Arrays.asList(parts[2].split(",")));
 
         parseTx(dst, keys);
@@ -96,6 +99,7 @@ public class ParseDestIdxKey {
     }
   }
 
+  // hash is dst, keys are txo hashes
   private static void parseTx(String hash, Set<String> keys) throws Exception {
     HttpRequest request = HttpRequest.newBuilder()
             .GET()
