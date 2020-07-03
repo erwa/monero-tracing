@@ -58,7 +58,7 @@ public class FindSrcDestTxs {
     String file = args[2];
     loadKeyTxMap(file);
 
-    System.err.println("Getting tx outputs for blocks in [" + start + ", " + end + ")");
+    System.err.println("Processing blocks in [" + start + ", " + end + ")");
     for (int i = start; i < end; i++) {
         if (i % 10 == 0) {
             System.err.println("Processing block " + i);
@@ -66,7 +66,7 @@ public class FindSrcDestTxs {
         parseBlock(i);
     }
 
-    System.err.println("Done getting tx outputs for blocks in [" + start + ", " + end + ")");
+    System.err.println("Done processing blocks in [" + start + ", " + end + ")");
   }
 
   private static void parseBlock(int block) throws Exception {
@@ -150,7 +150,7 @@ public class FindSrcDestTxs {
             if (tx.equals(entry2.getKey())) {
                 continue;
             }
-            if (!Collections.disjoint(idxs, entry2.getValue().keys)) {
+            if (!Collections.disjoint(idxs, entry2.getValue().idxs)) {
                 overlapTxs.add(tx);
                 overlapTxs.add(entry2.getKey());
             }
