@@ -12,7 +12,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-// Filters src dst with indices guesses down to those that we have ground truth for.
+// Filters src dst with indices guesses down to those that we have ground truth for
+// and prints out stats.
 //
 // time java FilterTracedSrcDst SrcDestTxsRingCTAllFilteredIndices3
 public class FilterTracedSrcDst {
