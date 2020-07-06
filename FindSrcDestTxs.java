@@ -22,6 +22,9 @@ import com.alibaba.fastjson.JSONObject;
 // TxOutputsRingCTAll has lines like
 //   txHash txo1,txo2,...
 // Outputs on each line: src dst TXOs
+//
+// This applies heuristics S1, S3, S4, and S5 (my own).
+// S2 is applied by filter_src_dst_txs.py
 public class FindSrcDestTxs {
   // map of RingCT TXO to tx hash
   private static final Map<String, String> keyTxMap = new HashMap<>();
@@ -112,7 +115,6 @@ public class FindSrcDestTxs {
     int inputEnd = data.indexOf("}]}]", inputStart);
     JSONArray inputs = JSON.parseArray(data.substring(inputStart + 8, inputEnd + 4));
 
-    // TODO (S5): check for case where key idxs for different txs overlap
     Map<String, KeyIdxs> txToKeyIdxsMap = new HashMap<>();
     int idx = 0;
     for (Object input : inputs) {

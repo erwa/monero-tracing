@@ -11,9 +11,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-// Counts correct and incorrect guesses by num mixins for merging outputs guesses for which we have at least some ground truth for.
+// Counts correct and incorrect guesses by num mixins for merging outputs guesses
+// for which we have at least some ground truth for.
 //
-// time java CountStatsTracedDstKeys DestKeysRingCTTraced
+// time java CountStatsTracedDstKeys DestKeysRingCTTraced > MergingOutputsStats
 public class CountStatsTracedDstKeys {
 
   public static void main(String[] args) throws Exception {

@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-// java GetSrcDstTxTypes SrcDestTxsRingCTAllFiltered
-// SrcDestTxsRingCTAllFiltered has format
+// java GetSrcDstTxTypes SrcDestTxsRingCTAllFiltered3 > SrcDestTxsRingCTAllFilteredTypes3
+// SrcDestTxsRingCTAllFiltered3 has format
 // src_hash dest_hash txo1 txo2 ...
 public class GetSrcDstTxTypes {
 

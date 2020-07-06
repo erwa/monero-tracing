@@ -16,7 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAllFiltered3
+// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAllFiltered3 > DestKeysRingCTFiltered3
 // Outputs on each line: dst idx key (all using integers)
 // Each output line represents a guess of the merging outputs heuristic
 // This is needed so we can check whether merging output heuristic is correct.
