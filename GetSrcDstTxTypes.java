@@ -38,7 +38,7 @@ public class GetSrcDstTxTypes {
         System.out.println(srcType + " " + dstType);
 
         count++;
-        if (count % 10000 == 0) {
+        if (count % 100 == 0) {
           System.err.println("Processed " + count + " lines from " + srcDestFile);
         }
       }

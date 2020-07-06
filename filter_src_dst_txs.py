@@ -5,7 +5,10 @@ from collections import OrderedDict
 import pprint
 import sys
 
+# Applies S2.
 # ./filter_src_dst_txs.py SrcDestTxsRingCTAll
+# SrcDestTxsRingCTAll has format
+# srcHash dstHash key1,key2,...
 def main():
     file = sys.argv[1]
 
@@ -26,6 +29,9 @@ def main():
                 src_dest_map[src] = {
                     'used_keys': set(),
                     'multi_used_keys': set(),
+                    # dest1: set()
+                    # dest2: set()
+                    # ... added below
                 }
             entry = src_dest_map[src]
             entry[dest] = set(keys)

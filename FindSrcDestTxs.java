@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 //   txHash txo1,txo2,...
 // Outputs on each line: src dst TXOs
 public class FindSrcDestTxs {
+  // map of RingCT TXO to tx hash
   private static final Map<String, String> keyTxMap = new HashMap<>();
 
   private static final String BASE_URL = "http://127.0.0.1:8081/api/";
@@ -98,6 +99,7 @@ public class FindSrcDestTxs {
   }
 
   // hash is candidate dst txn
+  // S1 is implicit.
   private static void parseTx(String hash) throws Exception {
     HttpRequest request = HttpRequest.newBuilder()
             .GET()
@@ -110,7 +112,7 @@ public class FindSrcDestTxs {
     int inputEnd = data.indexOf("}]}]", inputStart);
     JSONArray inputs = JSON.parseArray(data.substring(inputStart + 8, inputEnd + 4));
 
-    // TODO: check for case where key idxs for different txs overlap
+    // TODO (S5): check for case where key idxs for different txs overlap
     Map<String, KeyIdxs> txToKeyIdxsMap = new HashMap<>();
     int idx = 0;
     for (Object input : inputs) {
@@ -140,19 +142,19 @@ public class FindSrcDestTxs {
 
     txToKeyIdxsMap.entrySet().removeIf(entry -> !entry.getValue().valid || entry.getValue().keys.size() < 2);    
 
-    // TODO: double check logic
-    // remove txs whose idxs overlap with other txs
+    // S5: remove txs whose idxs overlap with other txs
     Set<String> overlapTxs = new HashSet<>();
     for (Map.Entry<String, KeyIdxs> entry : txToKeyIdxsMap.entrySet()) {
         String tx = entry.getKey();
         Set<Integer> idxs = entry.getValue().idxs;
         for (Map.Entry<String, KeyIdxs> entry2 : txToKeyIdxsMap.entrySet()) {
-            if (tx.equals(entry2.getKey())) {
+            String tx2 = entry2.getKey();
+            if (tx.equals(tx2)) {
                 continue;
             }
             if (!Collections.disjoint(idxs, entry2.getValue().idxs)) {
                 overlapTxs.add(tx);
-                overlapTxs.add(entry2.getKey());
+                overlapTxs.add(tx2);
             }
         }
     }

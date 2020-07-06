@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+// time java LoadKeyTxMap TxOutputsRingCTAll
 public class LoadKeyTxMap {
-  private static final Map<String, String> keyTxMap = new HashMap<>();
 
-  public static void main(String[] args) throws Exception {
-    String file = args[0];
-
-    int count = 0;
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+  public static Map<String, String> loadKeyTxMap(String txKeysFile) {
+    Map<String, String> keyTxMap = new HashMap<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(txKeysFile))) {
+      int count = 0;
       for (String line; (line = br.readLine()) != null; ) {
         String[] parts = line.split(" ");
         String tx = parts[0];
@@ -25,7 +24,15 @@ public class LoadKeyTxMap {
             System.err.println("Processed " + count + " transactions.");
         }
       }
-      System.out.println("Size of keyTxMap: " + keyTxMap.size());
+      System.err.println("Size of keyTxMap: " + keyTxMap.size());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
+    return keyTxMap;
+  }
+
+  public static void main(String[] args) throws Exception {
+    String file = args[0];
+    loadKeyTxMap(file);
   }
 }

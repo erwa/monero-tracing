@@ -16,9 +16,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAll
-// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAllFiltered
+// time java -cp *:. ParseDestIdxKey InputKeysAll TxHashesAll SrcDestTxsRingCTAllFiltered3
 // Outputs on each line: dst idx key (all using integers)
+// Each output line represents a guess of the merging outputs heuristic
 // This is needed so we can check whether merging output heuristic is correct.
 // 1 hr 5 min (for SrcDestTxsRingCTAll (non-filtered))
 public class ParseDestIdxKey {
@@ -63,7 +63,7 @@ public class ParseDestIdxKey {
         }
       }
 
-      System.err.println("Done loading txMap. Size: " + keyMap.size());
+      System.err.println("Done loading txMap. Size: " + txMap.size());
       System.err.println("Count = " + count);
     }
   }
@@ -100,6 +100,11 @@ public class ParseDestIdxKey {
   }
 
   // hash is dst, keys are txo hashes
+  // goal is to find the input indices of the keys
+  // At this point, S1-S5 have already been applied,
+  // allowing our logic to be simpler (we don't have to worry about
+  // printing the wrong index since if there were a conflict, it would
+  // have been filtered out by S1-S5).
   private static void parseTx(String hash, Set<String> keys) throws Exception {
     HttpRequest request = HttpRequest.newBuilder()
             .GET()
