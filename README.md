@@ -96,7 +96,7 @@ A brief description of the main files is given below.
 
 #### Merging Outputs Heuristic
 
-* TxOutputsRingCTAll - each line is `txHash txo1,txo2,...` where `txHash` is the transaction hash and each `txo` is a transaction output public key hash. This file only includes transactions after the start of RingCT (from 201701 onward). Generated using [GetTxOutputs.java](GetTxOutputs.java).
+* TxOutputsRingCTAll - each line is `txHash txo1,txo2,...` where `txHash` is the transaction hash and each `txo` is a transaction output public key hash. This file only includes transactions after the start of RingCT (from 201701 onward) that have at least two outputs. Generated using [GetTxOutputs.java](GetTxOutputs.java).
 
 * [FindSrcDestTxs.java](FindSrcDestTxs.java) reads `TxOutputsRingCTAll` and is used to output candidate source-destination transaction pairs, after filtering out S1, S3, and S4 from section 5.2 of the paper "A Traceability Analysis of Monero's Blockchain" by Kumar et al. It also filters out an additional "S5", which is the case where different source-destination pairs overlap in the destination inputs. The output format is `srcTxHash dstTxHash txo1,txo2,...` where `srcTxHash` is the source transaction hash, `dstTxHash` is the destination transaction hash, and each `txo` is a transaction output public key hash.
 
